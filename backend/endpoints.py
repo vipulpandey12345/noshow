@@ -1,7 +1,9 @@
 import psycopg2
-from flask import Flask
+from flask import Flask, jsonify
+from flask_cors import CORS  # Import CORS
 
 app = Flask(__name__)
+CORS(app)  # Enable CORS for all routes
 
 # Database configuration
 app.config['DB_HOST'] = 'localhost'
@@ -23,12 +25,16 @@ def get_db_connection():
 @app.route('/get_all_names')
 def get_all_names():
     conn = get_db_connection()
+    if conn is None:
+        return jsonify({'error': 'Could not connect to the database'}), 500
+    print('hit')
     cur = conn.cursor()
     cur.execute('SELECT username FROM users;')
     rows = cur.fetchall()
     cur.close()
     conn.close()
-    return {'data': rows}
-
+    usernames = [row[0] for row in rows]
+    print(usernames)
+    return jsonify({'data': usernames}) 
 if __name__ == '__main__':
     app.run(debug=True)
