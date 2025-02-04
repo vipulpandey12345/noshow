@@ -8,14 +8,15 @@ function App() {
 
   const [allNames, setAllNames] = useState([]);
   const [filteredNames, setFilteredNames] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
 
 
   const fetchAllNames = async () => {
     try{
-      const response = await fetch('https://jsonplaceholder.typicode.com/users');
+      const response = await fetch('http://127.0.0.1:5000/get_all_names');
       const data = await response.json();
-      setAllNames(data);
-      setFilteredNames(data);
+      setAllNames(data.data);
+      setFilteredNames(data.data);
     } catch (error) {
       console.error("Error fetching names:", error);
     }
@@ -33,13 +34,18 @@ function App() {
     }
   };
 
+  
+
   return (
     <div className="App">
-      <SearchBar 
-      onSearchClick={handleSearch}
-
+      <SearchBar
+      searchTerm={searchTerm}
+      onSearchChange={handleSearch}
+      onSearchClick={fetchAllNames}
+      filteredNames={filteredNames}
       />
     </div>
+
   );
 }
 
