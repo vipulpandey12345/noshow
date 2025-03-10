@@ -1,12 +1,11 @@
 import psycopg2
 from flask import Flask, jsonify
-from flask_cors import CORS  # Import CORS
+from flask_cors import CORS 
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
-# Database configuration
-#comment
+
 app.config['DB_HOST'] = 'localhost'
 app.config['DB_PORT'] = '5431'
 app.config['DB_NAME'] = 'postgres'
